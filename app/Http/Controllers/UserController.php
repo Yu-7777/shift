@@ -9,7 +9,8 @@ class UserController extends Controller
 {
     public function index()
     {
-        return view('users.index');
+        $users = User::all();
+        return view('users.index')->with(['users' => $users]);
     }
 
     public function show(User $user)
