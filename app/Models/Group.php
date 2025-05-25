@@ -25,9 +25,11 @@ class Group extends Model
     }
 
     // バイトに所属しているユーザーを取得
-    public function members()
+    public function members(int $limit_count = 10)
     {
         return $this->belongsToMany(User::class, 'group_members')
-                    ->wherePivot('role', GroupMember::ROLE_MEMBER);
+                    ->wherePivot('role', GroupMember::ROLE_MEMBER)
+                    ->orderBy('created_at', 'desc')
+                    ->paginate($limit_count);
     }
 }
