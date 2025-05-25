@@ -31,4 +31,4 @@ Route::middleware('auth')->group(function () {
 
 require __DIR__.'/auth.php';
 
-Route::get('users', UserController::class)->only(['index', 'show']);
+Route::resource('users', UserController::class)->only(['index', 'show']);
