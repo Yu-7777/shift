@@ -23,6 +23,6 @@ class Group extends Model
 
     public function shift_submissions()
     {
-        return $this->hasMany(ShiftRequest::class);
+        return $this->hasMany(ShiftSubmission::class);
     }
 }
