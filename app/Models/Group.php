@@ -23,4 +23,11 @@ class Group extends Model
     {
         return $this->hasMany(ShiftSubmission::class);
     }
+
+    // バイトに所属しているユーザーを取得
+    public function members()
+    {
+        return $this->belongsToMany(User::class, 'group_members')
+                    ->wherePivot('role', GroupMember::ROLE_MEMBER);
+    }
 }
