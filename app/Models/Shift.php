@@ -8,4 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 class Shift extends Model
 {
     use HasFactory;
+
+    public function groups()
+    {
+        return $this->belongsTo(Group::class);
+    }
 }

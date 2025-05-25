@@ -8,4 +8,14 @@ use Illuminate\Database\Eloquent\Model;
 class ShiftRequest extends Model
 {
     use HasFactory;
+
+    public function shift()
+    {
+        return $this->belongsTo(Shift::class);
+    }
+
+    public function group()
+    {
+        return $this->belongsTo(Group::class);
+    }
 }
