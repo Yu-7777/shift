@@ -5,8 +5,6 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-use App\Models\GroupMember;
-use App\Models\ShiftRequest;
 class Group extends Model
 {
     use HasFactory;
