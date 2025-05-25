@@ -17,4 +17,10 @@ class UserController extends Controller
     {
         return view('users.show', compact('user'));
     }
+
+    public function groups(User $user)
+    {
+        $groups = $user->groups;
+        return view('users.groups', compact('user', 'groups'));
+    }
 }
