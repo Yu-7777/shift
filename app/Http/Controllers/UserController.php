@@ -17,4 +17,11 @@ class UserController extends Controller
     {
         return view('users.show', compact('user'));
     }
+
+    // ユーザーが所属しているバイトグループの一覧を取得
+    public function groups(User $user)
+    {
+        $groups = $user->groups;
+        return view('users.groups', compact('user', 'groups'));
+    }
 }

@@ -42,6 +42,14 @@ class User extends Authenticatable
         return $this->belongsToMany(Chat::class);
     }
 
+    // 所属しているバイトグループを取得
+    public function groups(int $limit_count = 10)
+    {
+        return $this->belongsToMany(Group::class, 'group_members')
+                    ->orderBy('group_members.created_at', 'desc')
+                    ->paginate($limit_count);
+    }
+
     /**
      * The attributes that are mass assignable.
      *
