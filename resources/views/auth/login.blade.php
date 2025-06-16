@@ -7,7 +7,7 @@
 
         <!-- Email Address -->
         <div class="mb-8">
-            <x-underlined-input label="{{ __('Email Address') }}" name="email" id="email" type="email" required />
+            <x-underlined-input label="{{ __('Email Address') }}" name="email" type="email" :value="old('email')" required />
         </div>
 
         <!-- Password -->
