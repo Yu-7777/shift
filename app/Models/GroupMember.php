@@ -9,7 +9,7 @@ class GroupMember extends Model
 {
     use HasFactory;
 
-    public const ROLE_ADIMIN = 1;
+    public const ROLE_ADMIN = 1;
     public const ROLE_MEMBER = 2;
 
     public function group()
