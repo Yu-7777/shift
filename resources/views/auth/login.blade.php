@@ -12,7 +12,7 @@
 
         <!-- Password -->
         <div class="mb-8">
-            <x-underlined-input label="{{ __('Password') }}" name="password" id="password" type="password" required />
+            <x-underlined-input label="{{ __('Password') }}" name="password" type="password" required />
         </div>
 
         <!-- Remember Me -->
