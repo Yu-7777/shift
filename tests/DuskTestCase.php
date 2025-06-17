@@ -47,7 +47,7 @@ abstract class DuskTestCase extends BaseTestCase
             )
         );
     }
-    protected function baseUrl()
+    protected function baseUrl(): string
     {
         return 'http://web:80';
     }
