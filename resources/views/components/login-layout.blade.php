@@ -23,13 +23,6 @@
         <div class="w-1/2 flex items-center justify-center">
             <div class="w-full max-w-2xl px-6 py-4 bg-white overflow-hidden">
                 <div class="flex flex-col items-center">
-                    <div>
-                        <a href="/">
-                            <!-- ここにロゴ
-                            <x-application-logo class="w-20 h-20 fill-current text-gray-500" />
-                            -->
-                        </a>
-                    </div>
                     <div class="w-full mt-6">
                         {{ $slot }}
                     </div>
