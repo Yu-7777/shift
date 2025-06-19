@@ -14,10 +14,21 @@ class RoleSeeder extends Seeder
      */
     public function run(): void
     {
-        DB::table('roles')->insert([
-            'name' => '雇う側',
-            'created_at' => new DateTime(),
-            'updated_at' => new DateTime(),
-        ]);
+        $roles = [
+            [
+                'id' => 1,
+                'name' => 'アドミン',
+                'created_at' => new DateTime(),
+                'updated_at' => new DateTime(),
+            ],
+            [
+                'id' => 2,
+                'name' => 'メンバー',
+                'created_at' => new DateTime(),
+                'updated_at' => new DateTime(),
+            ],
+        ];
+
+        DB::table('roles')->insert($roles);
     }
 }

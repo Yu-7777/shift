@@ -13,10 +13,34 @@ class GroupSeeder extends Seeder
      */
     public function run(): void
     {
-        DB::table('groups')->insert([
-            'name' => 'シフトルグループ',
-            'ccreated_at' => now(),
-            'updated_at' => now(),
-        ]);
+        $groups = [
+            [
+                'name' => 'カフェスタッフ',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'name' => 'レストランホール',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'name' => 'キッチンスタッフ',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'name' => 'コンビニ夜勤',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'name' => '事務アシスタント',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+        ];
+
+        DB::table('groups')->insert($groups);
     }
 }
