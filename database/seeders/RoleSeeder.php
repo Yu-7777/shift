@@ -18,14 +18,14 @@ class RoleSeeder extends Seeder
             [
                 'id' => 1,
                 'name' => 'アドミン',
-                'created_at' => new DateTime(),
-                'updated_at' => new DateTime(),
+                'created_at' => now(),
+                'updated_at' => now(),
             ],
             [
                 'id' => 2,
                 'name' => 'メンバー',
-                'created_at' => new DateTime(),
-                'updated_at' => new DateTime(),
+                'created_at' => now(),
+                'updated_at' => now(),
             ],
         ];
 
