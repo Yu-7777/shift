@@ -11,7 +11,7 @@ class HomeController extends Controller
     {
         /** @var User $user */
         $user = auth()->user();
-        $groups = $user->groups();
+        $groups = $user->getShiftGroups();
         return view('home', compact('user', 'groups'));
     }
 }
