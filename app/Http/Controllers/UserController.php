@@ -18,7 +18,7 @@ class UserController extends Controller
         return view('users.show', compact('user'));
     }
 
-    // ユーザーが所属しているバイトグループの一覧を取得
+    // ユーザーが所属しているシフトグループの一覧を取得
     public function groups(User $user)
     {
         $groups = $user->groups;
