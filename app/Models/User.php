@@ -47,7 +47,8 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(Group::class, 'group_members')
                     ->orderBy('group_members.created_at', 'desc')
-                    ->paginate($limit_count);
+                    ->limit($limit_count)
+                    ->get();
     }
 
     /**

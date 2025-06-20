@@ -34,11 +34,6 @@
                                         </div>
                                     @endforeach
                                 </div>
-                                @if($groups->hasPages())
-                                    <div class="mt-4 pt-4 border-t border-gray-200">
-                                        {{ $groups->links() }}
-                                    </div>
-                                @endif
                             @else
                                 <div class="text-center py-6">
                                     <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
