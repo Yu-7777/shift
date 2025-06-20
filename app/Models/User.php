@@ -43,11 +43,11 @@ class User extends Authenticatable
     }
 
     // 所属しているバイトグループを取得
-    public function getShiftGroups()
+    public function getShiftGroups(int $limit_count = 10)
     {
         return $this->belongsToMany(Group::class, 'group_members')
                     ->orderBy('group_members.created_at', 'desc')
-                    ->paginate(10);
+                    ->paginate($limit_count);
     }
 
     /**
