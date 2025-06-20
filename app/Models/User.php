@@ -46,6 +46,7 @@ class User extends Authenticatable
     public function getShiftGroups(int $limit_count = 10)
     {
         return $this->belongsToMany(Group::class, 'group_members')
+                    ->withCount('group_members')
                     ->orderBy('group_members.created_at', 'desc')
                     ->limit($limit_count)
                     ->get();
