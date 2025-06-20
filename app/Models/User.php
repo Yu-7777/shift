@@ -46,7 +46,8 @@ class User extends Authenticatable
     public function getShiftGroups()
     {
         return $this->belongsToMany(Group::class, 'group_members')
-                    ->orderBy('group_members.created_at', 'desc');
+                    ->orderBy('group_members.created_at', 'desc')
+                    ->paginate(10);
     }
 
     /**

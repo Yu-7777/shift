@@ -25,7 +25,7 @@
                                                 </div>
                                                 <div>
                                                     <h4 class="text-sm font-medium text-gray-900">{{ $group->name }}</h4>
-                                                    <p class="text-xs text-gray-500">{{ $group->members()->count() }}名</p>
+                                                    <p class="text-xs text-gray-500">{{ $group->group_members_count ?? 0 }}名</p>
                                                 </div>
                                             </div>
                                             <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
