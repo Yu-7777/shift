@@ -21,7 +21,7 @@ class UserController extends Controller
     // ユーザーが所属しているシフトグループの一覧を取得
     public function groups(User $user)
     {
-        $groups = $user->groups;
+        $groups = $user->getShiftGroups();
         return view('users.groups', compact('user', 'groups'));
     }
 }
