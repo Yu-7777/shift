@@ -2,7 +2,6 @@
 
 namespace Tests\Browser;
 
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Laravel\Dusk\Browser;
 use Tests\DuskTestCase;
@@ -33,7 +32,7 @@ class HomeTest extends DuskTestCase
                     ->visit('/home')
                     ->assertSee('Home')
                     ->assertSee($group->name)
-                    ->clicklink($group->name)
+                    ->clickLink($group->name)
                     ->assertRouteIs('groups.show', ['group' => $group->id]);
         });
     }

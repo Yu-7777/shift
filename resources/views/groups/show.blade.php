@@ -154,10 +154,12 @@
                                             <div>
                                                 <div class="font-medium text-gray-900">{{ $member->name }}</div>
                                                 <div class="text-xs text-gray-500">
-                                                    @if($member->pivot->role_id == 1)
+                                                    @if($member->pivot->role_id == \App\Models\GroupMember::ROLE_ADMIN)
                                                         管理者
-                                                    @else
+                                                    @elseif($member->pivot->role_id == \App\Models\GroupMember::ROLE_MEMBER)
                                                         メンバー
+                                                    @else
+                                                        不明
                                                     @endif
                                                 </div>
                                             </div>

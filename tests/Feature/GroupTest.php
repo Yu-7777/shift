@@ -7,9 +7,11 @@ use App\Models\User;
 use App\Models\Group;
 use App\Models\Role;
 use App\Models\GroupMember;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class GroupTest extends TestCase
 {
+    use RefreshDatabase;
     /**
      * A basic unit test example.
      */
