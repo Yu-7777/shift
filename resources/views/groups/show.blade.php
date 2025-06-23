@@ -55,14 +55,14 @@
                         <div class="px-6 py-4 border-b border-gray-200">
                             <div class="flex items-center justify-between">
                                 <h3 class="text-lg font-semibold text-gray-900">シフトカレンダー</h3>
-                                <p class="text-sm text-gray-600">{{ date('Y年m月') }}</p>
+                                <p class="text-sm text-gray-600">{{ $calendar['displayMonth'] }}</p>
                             </div>
                         </div>
                         <div class="p-6">
                             
                             <!-- カレンダーヘッダー -->
                             <div class="grid grid-cols-7 gap-1 mb-2">
-                                @foreach(['日', '月', '火', '水', '木', '金', '土'] as $day)
+                                @foreach(\App\Helpers\CalendarHelper::getDayHeaders() as $day)
                                     <div class="text-center text-sm font-semibold text-gray-600 py-2">
                                         {{ $day }}
                                     </div>
@@ -70,48 +70,15 @@
                             </div>
 
                             <!-- カレンダーボディ -->
-                            @php
-                                // 今月の1日を取得
-                                $currentDate = \Carbon\Carbon::now()->startOfMonth();
-                                $endDate = $currentDate->copy()->endOfMonth();
-                                
-                                // 月の最初の週の日曜日を取得（日本式カレンダーのため）
-                                $startDate = $currentDate->copy();
-                                while ($startDate->dayOfWeek !== 0) { // 0 = 日曜日
-                                    $startDate->subDay();
-                                }
-                                
-                                // 月の最後の週の土曜日を取得
-                                $calendarEndDate = $endDate->copy();
-                                while ($calendarEndDate->dayOfWeek !== 6) { // 6 = 土曜日
-                                    $calendarEndDate->addDay();
-                                }
-                                
-                                // 全日付を配列として生成
-                                $calendarDates = [];
-                                $tempDate = $startDate->copy();
-                                while ($tempDate->lte($calendarEndDate)) {
-                                    $calendarDates[] = $tempDate->copy();
-                                    $tempDate->addDay();
-                                }
-                                
-                                // 週ごとに分割
-                                $weeks = array_chunk($calendarDates, 7);
-                            @endphp
-                            
-                            @foreach($weeks as $week)
+                            @foreach($calendar['weeks'] as $week)
                                 <div class="grid grid-cols-7 gap-1 mb-1">
                                     @foreach($week as $date)
                                         @php
-                                            $isCurrentMonth = $date->month === $currentDate->month;
-                                            $isToday = $date->isToday();
-                                            $dayShifts = $shifts->filter(function($shift) use ($date) {
-                                                return \Carbon\Carbon::parse($shift->start_time)->format('Y-m-d') === $date->format('Y-m-d');
-                                            });
+                                            $dayShifts = \App\Helpers\CalendarHelper::getShiftsForDate($shifts, $date);
                                         @endphp
                                         
-                                        <div class="border border-gray-200 h-20 p-1 {{ $isCurrentMonth ? 'bg-white' : 'bg-gray-100' }} {{ $isToday ? 'bg-blue-50 border-blue-300' : '' }}">
-                                            <div class="text-xs {{ $isCurrentMonth ? 'text-gray-900' : 'text-gray-400' }} {{ $isToday ? 'font-bold text-blue-600' : '' }}">
+                                        <div class="{{ \App\Helpers\CalendarHelper::getDateStyleClass($date, $calendar['currentDate']) }}">
+                                            <div class="{{ \App\Helpers\CalendarHelper::getDateTextStyleClass($date, $calendar['currentDate']) }}">
                                                 {{ $date->format('j') }}
                                             </div>
                                             

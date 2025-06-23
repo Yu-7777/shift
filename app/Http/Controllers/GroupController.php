@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Group;
 use App\Models\Shift;
 use Carbon\Carbon;
+use App\Helpers\CalendarHelper;
 
 class GroupController extends Controller
 {
@@ -36,7 +37,10 @@ class GroupController extends Controller
 
         // グループメンバーを取得
         $members = $group->users;
+        
+        // カレンダーデータを生成
+        $calendar = CalendarHelper::generateMonthCalendar();
 
-        return view('groups.show', compact('group', 'shifts', 'members'));
+        return view('groups.show', compact('group', 'shifts', 'members', 'calendar'));
     }
 }
