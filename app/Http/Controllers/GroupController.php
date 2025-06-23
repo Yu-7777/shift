@@ -19,7 +19,7 @@ class GroupController extends Controller
     public function show(Group $group)
     {
         // ユーザーがこのグループのメンバーかチェック
-        $isMember = $group->belongsToMany(\App\Models\User::class, 'group_members')
+        $isMember = $group->users()
             ->where('users.id', auth()->id())
             ->exists();
 
@@ -35,9 +35,7 @@ class GroupController extends Controller
             ->get();
 
         // グループメンバーを取得
-        $members = $group->belongsToMany(\App\Models\User::class, 'group_members')
-            ->withPivot('role_id')
-            ->get();
+        $members = $group->users;
 
         return view('groups.show', compact('group', 'shifts', 'members'));
     }
