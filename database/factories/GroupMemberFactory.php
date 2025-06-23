@@ -43,4 +43,13 @@ class GroupMemberFactory extends Factory
             ];
         });
     }
+
+    public function withRole(Role $role): Factory
+    {
+        return $this->state(function (array $attributes) use ($role) {
+            return [
+                'role_id' => $role->id,
+            ];
+        });
+    }
 }

@@ -9,9 +9,11 @@ use Tests\TestCase;
 use App\Models\User;
 use App\Models\Group;
 use App\Models\GroupMember;
+use App\Models\Role;
 
 class UserTest extends TestCase
 {
+    use RefreshDatabase;
     /**
      * A basic unit test example.
      */
@@ -19,7 +21,13 @@ class UserTest extends TestCase
     {
         $user = User::factory()->create();
         $groups = Group::factory()->create();
-        $userGroups = GroupMember::factory()->count(15)->withUser($user)->withGroup($groups)->create();
+        $role = Role::factory()->create();
+        GroupMember::factory()
+            ->count(15)
+            ->withUser($user)
+            ->withGroup($groups)
+            ->withRole($role)
+            ->create();
 
         $shiftGroups = $user->getShiftGroups();
 
