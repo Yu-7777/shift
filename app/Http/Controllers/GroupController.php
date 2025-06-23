@@ -28,9 +28,9 @@ class GroupController extends Controller
         }
 
         // 今月のシフトを取得
-        $currentMonth = Carbon::now()->format('Y-m');
         $shifts = $group->shifts()
-            ->whereRaw('DATE_FORMAT(start_time, "%Y-%m") = ?', [$currentMonth])
+            ->whereYear('start_time', Carbon::now()->year)
+            ->whereMonth('start_time', Carbon::now()->month)
             ->with('users')
             ->get();
 
