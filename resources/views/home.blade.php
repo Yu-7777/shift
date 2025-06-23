@@ -18,20 +18,22 @@
                             @if($groups->count() > 0)
                                 <div class="space-y-3">
                                     @foreach($groups as $group)
-                                        <div class="flex items-center justify-between p-3 rounded-lg hover:bg-gray-50 cursor-pointer transition-colors border border-gray-100">
-                                            <div class="flex items-center space-x-3">
-                                                <div class="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center">
-                                                    <span class="text-white text-sm font-medium">{{ substr($group->name, 0, 1) }}</span>
+                                        <a href="{{ route('groups.show', $group) }}" class="block">
+                                            <div class="flex items-center justify-between p-3 rounded-lg hover:bg-gray-50 cursor-pointer transition-colors border border-gray-100">
+                                                <div class="flex items-center space-x-3">
+                                                    <div class="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center">
+                                                        <span class="text-white text-sm font-medium">{{ substr($group->name, 0, 1) }}</span>
+                                                    </div>
+                                                    <div>
+                                                        <h4 class="text-sm font-medium text-gray-900">{{ $group->name }}</h4>
+                                                        <p class="text-xs text-gray-500">{{ $group->group_members_count ?? 0 }}名</p>
+                                                    </div>
                                                 </div>
-                                                <div>
-                                                    <h4 class="text-sm font-medium text-gray-900">{{ $group->name }}</h4>
-                                                    <p class="text-xs text-gray-500">{{ $group->group_members_count ?? 0 }}名</p>
-                                                </div>
+                                                <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                                                </svg>
                                             </div>
-                                            <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
-                                            </svg>
-                                        </div>
+                                        </a>
                                     @endforeach
                                 </div>
                             @else

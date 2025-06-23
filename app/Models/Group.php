@@ -24,7 +24,20 @@ class Group extends Model
         return $this->hasMany(ShiftSubmission::class);
     }
 
-    // バイトに所属しているユーザーを取得
+    public function shifts()
+    {
+        return $this->hasMany(Shift::class);
+    }
+
+    // 全メンバーを取得（role_idも含む）
+    public function users()
+    {
+        return $this->belongsToMany(User::class, 'group_members')
+                    ->withPivot('role_id')
+                    ->withTimestamps();
+    }
+
+    // バイトに所属しているユーザーを取得（既存のメソッド）
     public function members(int $limit_count = 10)
     {
         return $this->belongsToMany(User::class, 'group_members')
