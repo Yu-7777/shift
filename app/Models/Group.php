@@ -24,6 +24,11 @@ class Group extends Model
         return $this->hasMany(ShiftSubmission::class);
     }
 
+    public function shifts()
+    {
+        return $this->hasMany(Shift::class);
+    }
+
     // バイトに所属しているユーザーを取得
     public function members(int $limit_count = 10)
     {
