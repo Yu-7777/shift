@@ -19,8 +19,8 @@ class GroupController extends Controller
     public function show(Group $group)
     {
         // ユーザーがこのグループのメンバーかチェック
-        $isMember = $group->group_members()
-            ->where('user_id', auth()->id())
+        $isMember = $group->belongsToMany(\App\Models\User::class, 'group_members')
+            ->where('users.id', auth()->id())
             ->exists();
 
         if (!$isMember) {
