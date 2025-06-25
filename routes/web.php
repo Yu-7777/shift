@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AdminShiftController;
 use App\Http\Controllers\AvailabilityController;
+use App\Http\Controllers\ChatController;
 use App\Http\Controllers\GroupController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProfileController;
@@ -49,9 +50,26 @@ Route::middleware('auth')->group(function () {
         Route::get('/admin/availabilities', [AdminShiftController::class, 'availabilities'])->name('admin.availabilities.index');
         Route::post('/admin/search-users', [AdminShiftController::class, 'searchAvailableUsers'])->name('admin.search-users');
     });
+
+    // グループチャット作成ルート（prefix外で定義）
+    Route::post('/groups/{group}/chat', [ChatController::class, 'createGroupChat'])->name('chats.create-group');
 });
 
 require __DIR__.'/auth.php';
+
+// チャット機能ルート（認証が必要）
+Route::middleware(['auth'])->group(function () {
+    Route::prefix('chats')->group(function () {
+        Route::get('/', [ChatController::class, 'index'])->name('chats.index');
+        Route::get('/{chat}', [ChatController::class, 'show'])->name('chats.show');
+        Route::post('/{chat}/messages', [ChatController::class, 'sendMessage'])->name('chats.send-message');
+        Route::delete('/{chat}', [ChatController::class, 'destroy'])->name('chats.destroy');
+        Route::get('/search/users', [ChatController::class, 'searchUsers'])->name('chats.search-users');
+    });
+    
+    // DM作成ルート
+    Route::post('/chats/dm/{user}', [ChatController::class, 'createDM'])->name('chats.create-dm');
+});
 
 Route::resource('users', UserController::class)->only(['index', 'show']);
 Route::get('/users/{user}/groups', [UserController::class, 'showGroups'])->name('users.groups');

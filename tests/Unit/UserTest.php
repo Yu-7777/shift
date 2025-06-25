@@ -15,6 +15,12 @@ class UserTest extends TestCase
 {
     use RefreshDatabase;
 
+    protected function setUp(): void
+    {
+        parent::setUp();
+        $this->seed(\Database\Seeders\RoleSeeder::class);
+    }
+
     public function test_user_has_fillable_attributes()
     {
         $fillable = ['name', 'email', 'password'];
@@ -44,18 +50,17 @@ class UserTest extends TestCase
         $user = User::factory()->create();
         $group1 = Group::factory()->create();
         $group2 = Group::factory()->create();
-        $role = Role::create(['name' => 'メンバー']);
         
         GroupMember::create([
             'user_id' => $user->id,
             'group_id' => $group1->id,
-            'role_id' => $role->id,
+            'role_id' => GroupMember::ROLE_MEMBER,
         ]);
         
         GroupMember::create([
             'user_id' => $user->id,
             'group_id' => $group2->id,
-            'role_id' => $role->id,
+            'role_id' => GroupMember::ROLE_MEMBER,
         ]);
 
         $this->assertCount(2, $user->groupMembers);
@@ -99,14 +104,13 @@ class UserTest extends TestCase
     {
         $user = User::factory()->create();
         $groups = Group::factory()->count(15)->create();
-        $role = Role::create(['name' => 'メンバー']);
         
         // ユーザーを15個のグループに追加
         foreach ($groups as $group) {
             GroupMember::create([
                 'user_id' => $user->id,
                 'group_id' => $group->id,
-                'role_id' => $role->id,
+                'role_id' => GroupMember::ROLE_MEMBER,
             ]);
         }
 
@@ -148,17 +152,16 @@ class UserTest extends TestCase
     {
         $user = User::factory()->create();
         $group = Group::factory()->create();
-        $adminRole = Role::create(['name' => '管理者']);
         
         GroupMember::create([
             'user_id' => $user->id,
             'group_id' => $group->id,
-            'role_id' => $adminRole->id,
+            'role_id' => GroupMember::ROLE_ADMIN,
         ]);
 
         $groupMember = $user->groupMembers()->with('role')->first();
         
-        $this->assertEquals('管理者', $groupMember->role->name);
+        $this->assertEquals('アドミン', $groupMember->role->name);
     }
 
     public function test_user_can_have_different_roles_in_different_groups()
@@ -166,25 +169,23 @@ class UserTest extends TestCase
         $user = User::factory()->create();
         $group1 = Group::factory()->create();
         $group2 = Group::factory()->create();
-        $adminRole = Role::create(['name' => '管理者']);
-        $memberRole = Role::create(['name' => 'メンバー']);
         
         GroupMember::create([
             'user_id' => $user->id,
             'group_id' => $group1->id,
-            'role_id' => $adminRole->id,
+            'role_id' => GroupMember::ROLE_ADMIN,
         ]);
         
         GroupMember::create([
             'user_id' => $user->id,
             'group_id' => $group2->id,
-            'role_id' => $memberRole->id,
+            'role_id' => GroupMember::ROLE_MEMBER,
         ]);
 
         $groupMembers = $user->groupMembers()->with('role')->get();
         
         $this->assertCount(2, $groupMembers);
-        $this->assertTrue($groupMembers->contains('role.name', '管理者'));
+        $this->assertTrue($groupMembers->contains('role.name', 'アドミン'));
         $this->assertTrue($groupMembers->contains('role.name', 'メンバー'));
     }
 }

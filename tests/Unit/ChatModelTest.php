@@ -89,13 +89,16 @@ class ChatModelTest extends TestCase
         ]);
     }
 
-    public function test_chat_name_is_required()
+    public function test_chat_can_be_created_without_name_for_dm()
     {
-        $this->expectException(\Illuminate\Database\QueryException::class);
-        
-        Chat::create([
-            'type' => Chat::TYPE_GROUP,
+        $chat = Chat::create([
+            'type' => Chat::TYPE_DM,
         ]);
+
+        $this->assertDatabaseHas('chats', [
+            'type' => 'dm',
+        ]);
+        $this->assertNull($chat->name);
     }
 
     public function test_chat_type_validation()

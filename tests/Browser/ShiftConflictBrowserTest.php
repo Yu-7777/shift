@@ -29,7 +29,7 @@ class ShiftConflictBrowserTest extends DuskTestCase
     {
         $this->browse(function (Browser $browser) {
             $browser->visit('/')
-                    ->assertSee('Laravel');
+                    ->assertSee('シフト管理システム');
         });
         $this->assertTrue(true, 'Basic browser test successful');
     }
@@ -61,7 +61,7 @@ class ShiftConflictBrowserTest extends DuskTestCase
     {
         $this->browse(function (Browser $browser) {
             $browser->visit('/')
-                    ->assertTitle('Laravel'); // ページタイトルの確認
+                    ->assertSee('シフト管理システム'); // ページタイトルの確認
         });
         $this->assertTrue(true, 'Navigation and basic page structure works');
     }

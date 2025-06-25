@@ -18,7 +18,7 @@ class UserControllerTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-
+        $this->seed(\Database\Seeders\RoleSeeder::class);
         $this->user = User::factory()->create();
     }
 
@@ -83,7 +83,6 @@ class UserControllerTest extends TestCase
 
     public function test_user_show_groups_displays_user_groups()
     {
-        $role = Role::create(['name' => 'メンバー']);
         
         $group1 = Group::factory()->create(['name' => 'グループ1']);
         $group2 = Group::factory()->create(['name' => 'グループ2']);
@@ -92,13 +91,13 @@ class UserControllerTest extends TestCase
         GroupMember::create([
             'user_id' => $this->user->id,
             'group_id' => $group1->id,
-            'role_id' => $role->id,
+            'role_id' => GroupMember::ROLE_MEMBER,
         ]);
 
         GroupMember::create([
             'user_id' => $this->user->id,
             'group_id' => $group2->id,
-            'role_id' => $role->id,
+            'role_id' => GroupMember::ROLE_MEMBER,
         ]);
 
         $response = $this->get(route('users.groups', $this->user));
@@ -129,8 +128,6 @@ class UserControllerTest extends TestCase
 
     public function test_user_show_groups_includes_role_information()
     {
-        $adminRole = Role::create(['name' => '管理者']);
-        $memberRole = Role::create(['name' => 'メンバー']);
         
         $group1 = Group::factory()->create();
         $group2 = Group::factory()->create();
@@ -138,13 +135,13 @@ class UserControllerTest extends TestCase
         GroupMember::create([
             'user_id' => $this->user->id,
             'group_id' => $group1->id,
-            'role_id' => $adminRole->id,
+            'role_id' => GroupMember::ROLE_ADMIN,
         ]);
 
         GroupMember::create([
             'user_id' => $this->user->id,
             'group_id' => $group2->id,
-            'role_id' => $memberRole->id,
+            'role_id' => GroupMember::ROLE_MEMBER,
         ]);
 
         $response = $this->get(route('users.groups', $this->user));
@@ -162,13 +159,12 @@ class UserControllerTest extends TestCase
         $group1Data = $groups->firstWhere('id', $group1->id);
         $group2Data = $groups->firstWhere('id', $group2->id);
 
-        $this->assertEquals($adminRole->id, $group1Data->pivot->role_id);
-        $this->assertEquals($memberRole->id, $group2Data->pivot->role_id);
+        $this->assertEquals(GroupMember::ROLE_ADMIN, $group1Data->pivot->role_id);
+        $this->assertEquals(GroupMember::ROLE_MEMBER, $group2Data->pivot->role_id);
     }
 
     public function test_user_show_groups_handles_many_groups()
     {
-        $role = Role::create(['name' => 'メンバー']);
         
         // Create many groups for this user
         for ($i = 1; $i <= 15; $i++) {
@@ -176,7 +172,7 @@ class UserControllerTest extends TestCase
             GroupMember::create([
                 'user_id' => $this->user->id,
                 'group_id' => $group->id,
-                'role_id' => $role->id,
+                'role_id' => GroupMember::ROLE_MEMBER,
             ]);
         }
 
@@ -200,7 +196,7 @@ class UserControllerTest extends TestCase
         $testUser = User::factory()->create(['name' => '表示テストユーザー']);
 
         $response = $this->get(route('users.index'));
-
+        
         $response->assertStatus(200);
         $response->assertSee('表示テストユーザー');
     }
@@ -221,13 +217,12 @@ class UserControllerTest extends TestCase
 
     public function test_user_show_groups_displays_user_and_group_names()
     {
-        $role = Role::create(['name' => 'メンバー']);
         $group = Group::factory()->create(['name' => '表示テストグループ']);
 
         GroupMember::create([
             'user_id' => $this->user->id,
             'group_id' => $group->id,
-            'role_id' => $role->id,
+            'role_id' => GroupMember::ROLE_MEMBER,
         ]);
 
         $response = $this->get(route('users.groups', $this->user));
@@ -252,13 +247,12 @@ class UserControllerTest extends TestCase
         $response2->assertSee('ユーザー2');
 
         // Test that groups are shown correctly for each user
-        $role = Role::create(['name' => 'メンバー']);
         $group = Group::factory()->create(['name' => 'テストグループ']);
 
         GroupMember::create([
             'user_id' => $user1->id,
             'group_id' => $group->id,
-            'role_id' => $role->id,
+            'role_id' => GroupMember::ROLE_MEMBER,
         ]);
 
         $groupsResponse1 = $this->get(route('users.groups', $user1));

@@ -18,7 +18,7 @@ class HomeControllerTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-
+        $this->seed(\Database\Seeders\RoleSeeder::class);
         $this->user = User::factory()->create();
     }
 
@@ -57,7 +57,6 @@ class HomeControllerTest extends TestCase
         $this->actingAs($this->user);
 
         // Create groups and add user to them
-        $role = Role::create(['name' => 'メンバー']);
         
         $group1 = Group::factory()->create(['name' => 'グループ1']);
         $group2 = Group::factory()->create(['name' => 'グループ2']);
@@ -66,19 +65,19 @@ class HomeControllerTest extends TestCase
         GroupMember::create([
             'user_id' => $this->user->id,
             'group_id' => $group1->id,
-            'role_id' => $role->id,
+            'role_id' => GroupMember::ROLE_MEMBER,
         ]);
 
         GroupMember::create([
             'user_id' => $this->user->id,
             'group_id' => $group2->id,
-            'role_id' => $role->id,
+            'role_id' => GroupMember::ROLE_MEMBER,
         ]);
 
         GroupMember::create([
             'user_id' => $this->user->id,
             'group_id' => $group3->id,
-            'role_id' => $role->id,
+            'role_id' => GroupMember::ROLE_MEMBER,
         ]);
 
         $response = $this->get(route('home'));
@@ -107,7 +106,6 @@ class HomeControllerTest extends TestCase
         $this->actingAs($this->user);
 
         $otherUser = User::factory()->create();
-        $role = Role::create(['name' => 'メンバー']);
         
         $userGroup = Group::factory()->create(['name' => 'ユーザーのグループ']);
         $otherGroup = Group::factory()->create(['name' => '他人のグループ']);
@@ -116,14 +114,14 @@ class HomeControllerTest extends TestCase
         GroupMember::create([
             'user_id' => $this->user->id,
             'group_id' => $userGroup->id,
-            'role_id' => $role->id,
+            'role_id' => GroupMember::ROLE_MEMBER,
         ]);
 
         // Add other user to otherGroup
         GroupMember::create([
             'user_id' => $otherUser->id,
             'group_id' => $otherGroup->id,
-            'role_id' => $role->id,
+            'role_id' => GroupMember::ROLE_MEMBER,
         ]);
 
         $response = $this->get(route('home'));
@@ -137,7 +135,6 @@ class HomeControllerTest extends TestCase
     {
         $this->actingAs($this->user);
 
-        $role = Role::create(['name' => 'メンバー']);
         
         // Create many groups for this user
         for ($i = 1; $i <= 15; $i++) {
@@ -145,7 +142,7 @@ class HomeControllerTest extends TestCase
             GroupMember::create([
                 'user_id' => $this->user->id,
                 'group_id' => $group->id,
-                'role_id' => $role->id,
+                'role_id' => GroupMember::ROLE_MEMBER,
             ]);
         }
 
@@ -168,8 +165,6 @@ class HomeControllerTest extends TestCase
     {
         $this->actingAs($this->user);
 
-        $adminRole = Role::create(['name' => '管理者']);
-        $memberRole = Role::create(['name' => 'メンバー']);
         
         $adminGroup = Group::factory()->create(['name' => '管理グループ']);
         $memberGroup = Group::factory()->create(['name' => 'メンバーグループ']);
@@ -177,13 +172,13 @@ class HomeControllerTest extends TestCase
         GroupMember::create([
             'user_id' => $this->user->id,
             'group_id' => $adminGroup->id,
-            'role_id' => $adminRole->id,
+            'role_id' => GroupMember::ROLE_ADMIN,
         ]);
 
         GroupMember::create([
             'user_id' => $this->user->id,
             'group_id' => $memberGroup->id,
-            'role_id' => $memberRole->id,
+            'role_id' => GroupMember::ROLE_MEMBER,
         ]);
 
         $response = $this->get(route('home'));
@@ -209,8 +204,6 @@ class HomeControllerTest extends TestCase
     {
         $this->actingAs($this->user);
 
-        $adminRole = Role::create(['name' => '管理者']);
-        $memberRole = Role::create(['name' => 'メンバー']);
         
         $group1 = Group::factory()->create();
         $group2 = Group::factory()->create();
@@ -219,13 +212,13 @@ class HomeControllerTest extends TestCase
         GroupMember::create([
             'user_id' => $this->user->id,
             'group_id' => $group1->id,
-            'role_id' => $adminRole->id,
+            'role_id' => GroupMember::ROLE_ADMIN,
         ]);
 
         GroupMember::create([
             'user_id' => $this->user->id,
             'group_id' => $group2->id,
-            'role_id' => $memberRole->id,
+            'role_id' => GroupMember::ROLE_MEMBER,
         ]);
 
         $response = $this->get(route('home'));
@@ -237,8 +230,8 @@ class HomeControllerTest extends TestCase
         $group1Data = $groups->firstWhere('id', $group1->id);
         $group2Data = $groups->firstWhere('id', $group2->id);
 
-        $this->assertEquals($adminRole->id, $group1Data->pivot->role_id);
-        $this->assertEquals($memberRole->id, $group2Data->pivot->role_id);
+        $this->assertEquals(GroupMember::ROLE_ADMIN, $group1Data->pivot->role_id);
+        $this->assertEquals(GroupMember::ROLE_MEMBER, $group2Data->pivot->role_id);
     }
 
     public function test_home_page_content_includes_user_name()
