@@ -4,6 +4,7 @@
     "click here to request another": "次のリクエストはこちら",
     "Confirm Password": "パスワード（確認用）",
     "Dashboard": "ダッシュボード",
+    "Email": "メールアドレス",
     "Email Address": "メールアドレス",
     "Forgot Your Password?": "パスワードを忘れた方はこちら",
     "If you did not receive the email": "メールが受信できなかった場合",
@@ -18,5 +19,10 @@
     "Send Password Reset Link": "パスワード再設定URLを送信",
     "Toggle navigation": "ナビゲーション切替",
     "Verify Your Email Address": "メールアドレスの確認",
-    "You are logged in!": "ログイン成功"
+    "You are logged in!": "ログイン成功",
+    "The email field is required.": "メールアドレスは必須です",
+    "The password field is required.": "パスワードは必須です",
+    "The name field is required.": "氏名は必須です",
+    "Home": "ホーム",
+    "Profile": "プロフィール"
 }

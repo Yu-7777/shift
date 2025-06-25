@@ -9,6 +9,8 @@ class Message extends Model
 {
     use HasFactory;
 
+    protected $fillable = ['user_id', 'chat_id', 'body'];
+
     public function chat()
     {
         return $this->belongsTo(Chat::class);

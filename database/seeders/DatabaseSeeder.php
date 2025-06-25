@@ -18,8 +18,6 @@ class DatabaseSeeder extends Seeder
             GroupSeeder::class,
             GroupMemberSeeder::class,
             ShiftSeeder::class,
-            ShiftUsersSeeder::class,
-            ShiftRequestSeeder::class,
             ShiftSubmissionSeeder::class,
             ChatSeeder::class,
             MessageSeeder::class,

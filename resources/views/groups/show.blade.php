@@ -17,18 +17,35 @@
                                 <h3 class="text-sm font-semibold text-gray-900">シフト管理</h3>
                             </div>
                             <div class="p-4 space-y-3">
-                                <button class="w-full flex items-center justify-center px-4 py-3 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors">
-                                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
-                                    </svg>
-                                    <span class="text-sm font-medium">シフト入力</span>
-                                </button>
-                                <button class="w-full flex items-center justify-center px-4 py-3 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors">
+                                @if(auth()->user()->groupMembers()->where('group_id', $group->id)->where('role_id', App\Models\GroupMember::ROLE_ADMIN)->exists())
+                                    <!-- 管理者用ボタン -->
+                                    <a href="{{ route('admin.shifts.create', $group) }}" class="w-full flex items-center justify-center px-4 py-3 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors">
+                                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                                        </svg>
+                                        <span class="text-sm font-medium">シフト作成</span>
+                                    </a>
+                                    <a href="{{ route('admin.availabilities.index', $group) }}" class="w-full flex items-center justify-center px-4 py-3 bg-green-500 text-white rounded-lg hover:bg-green-600 transition-colors">
+                                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"></path>
+                                        </svg>
+                                        <span class="text-sm font-medium">可用性確認</span>
+                                    </a>
+                                @else
+                                    <!-- 従業員用ボタン -->
+                                    <a href="{{ route('availability.create', $group) }}" class="w-full flex items-center justify-center px-4 py-3 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors">
+                                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                        </svg>
+                                        <span class="text-sm font-medium">可用性登録</span>
+                                    </a>
+                                @endif
+                                <a href="{{ route('availability.index', $group) }}" class="w-full flex items-center justify-center px-4 py-3 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors">
                                     <svg class="w-5 h-5 text-gray-400 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>
                                     </svg>
-                                    <span class="text-sm text-gray-700">シフト申請</span>
-                                </button>
+                                    <span class="text-sm text-gray-700">可用性一覧</span>
+                                </a>
                             </div>
                         </div>
 
@@ -88,7 +105,7 @@
                                                         <div class="text-xs bg-blue-100 text-blue-800 px-1 py-0.5 rounded mb-1">
                                                             {{ \Carbon\Carbon::parse($shift->start_time)->format('H:i') }} - {{ \Carbon\Carbon::parse($shift->end_time)->format('H:i') }}
                                                             <div class="text-xs text-gray-600">
-                                                                {{ $shift->users->count() }}人
+                                                                {{ $shift->user->name ?? '未割当' }}
                                                             </div>
                                                         </div>
                                                     @endforeach
@@ -100,6 +117,7 @@
                             @endforeach
                         </div>
                     </div>
+
                 </div>
 
                 <!-- 右側: メンバーリスト -->

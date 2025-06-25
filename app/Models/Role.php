@@ -9,6 +9,8 @@ class Role extends Model
 {
     use HasFactory;
 
+    protected $fillable = ['name'];
+
     public function group_members()
     {
         return $this->hasMany(GroupMember::class);

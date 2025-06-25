@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\User;
 
 class HomeController extends Controller
@@ -12,6 +11,7 @@ class HomeController extends Controller
         /** @var User $user */
         $user = auth()->user();
         $groups = $user->getShiftGroups();
+
         return view('home', compact('user', 'groups'));
     }
 }
