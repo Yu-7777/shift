@@ -16,6 +16,12 @@ class GroupModelTest extends TestCase
 {
     use RefreshDatabase;
 
+    protected function setUp(): void
+    {
+        parent::setUp();
+        $this->seed(\Database\Seeders\RoleSeeder::class);
+    }
+
     public function test_group_has_fillable_attributes()
     {
         $fillable = ['name'];
@@ -28,12 +34,11 @@ class GroupModelTest extends TestCase
     {
         $group = Group::factory()->create();
         $user = User::factory()->create();
-        $role = Role::create(['name' => '管理者']);
         
         GroupMember::create([
             'user_id' => $user->id,
             'group_id' => $group->id,
-            'role_id' => $role->id,
+            'role_id' => GroupMember::ROLE_ADMIN,
         ]);
 
         $this->assertInstanceOf(\Illuminate\Database\Eloquent\Collection::class, $group->groupMembers);
@@ -99,19 +104,18 @@ class GroupModelTest extends TestCase
     {
         $group = Group::factory()->create();
         $user = User::factory()->create(['name' => 'テストユーザー']);
-        $role = Role::create(['name' => '管理者']);
         
         GroupMember::create([
             'user_id' => $user->id,
             'group_id' => $group->id,
-            'role_id' => $role->id,
+            'role_id' => GroupMember::ROLE_ADMIN,
         ]);
 
         $members = $group->groupMembers()->with(['user', 'role'])->get();
         
         $this->assertCount(1, $members);
         $this->assertEquals('テストユーザー', $members->first()->user->name);
-        $this->assertEquals('管理者', $members->first()->role->name);
+        $this->assertEquals('アドミン', $members->first()->role->name);
     }
 
     public function test_group_can_be_created_with_name()
@@ -148,19 +152,17 @@ class GroupModelTest extends TestCase
         $group = Group::factory()->create();
         $admin = User::factory()->create();
         $member = User::factory()->create();
-        $adminRole = Role::create(['name' => '管理者']);
-        $memberRole = Role::create(['name' => 'メンバー']);
         
         GroupMember::create([
             'user_id' => $admin->id,
             'group_id' => $group->id,
-            'role_id' => $adminRole->id,
+            'role_id' => GroupMember::ROLE_ADMIN,
         ]);
         
         GroupMember::create([
             'user_id' => $member->id,
             'group_id' => $group->id,
-            'role_id' => $memberRole->id,
+            'role_id' => GroupMember::ROLE_MEMBER,
         ]);
 
         $this->assertCount(2, $group->groupMembers);

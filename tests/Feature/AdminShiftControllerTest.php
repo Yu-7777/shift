@@ -25,9 +25,8 @@ class AdminShiftControllerTest extends TestCase
     {
         parent::setUp();
 
-        // ロール作成
-        $this->adminRole = Role::create(['name' => '管理者']);
-        $this->memberRole = Role::create(['name' => 'メンバー']);
+        // シーダーを実行してRoleを作成
+        $this->seed(\Database\Seeders\RoleSeeder::class);
 
         // ユーザー作成
         $this->admin = User::factory()->create();
@@ -36,17 +35,17 @@ class AdminShiftControllerTest extends TestCase
         // グループ作成
         $this->group = Group::factory()->create();
 
-        // グループメンバー追加  
+        // グループメンバー追加（定数を使用）
         GroupMember::create([
             'user_id' => $this->admin->id,
             'group_id' => $this->group->id,
-            'role_id' => $this->adminRole->id
+            'role_id' => GroupMember::ROLE_ADMIN
         ]);
 
         GroupMember::create([
             'user_id' => $this->member->id,
             'group_id' => $this->group->id,
-            'role_id' => $this->memberRole->id
+            'role_id' => GroupMember::ROLE_MEMBER
         ]);
     }
 
@@ -386,7 +385,7 @@ class AdminShiftControllerTest extends TestCase
         GroupMember::create([
             'user_id' => $earlyUser->id,
             'group_id' => $this->group->id,
-            'role_id' => $this->memberRole->id,
+            'role_id' => GroupMember::ROLE_MEMBER,
         ]);
 
         ShiftSubmission::create([
@@ -441,7 +440,7 @@ class AdminShiftControllerTest extends TestCase
         GroupMember::create([
             'user_id' => $inactiveUser->id,
             'group_id' => $this->group->id,
-            'role_id' => $this->memberRole->id,
+            'role_id' => GroupMember::ROLE_MEMBER,
         ]);
 
         ShiftSubmission::create([

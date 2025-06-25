@@ -197,6 +197,10 @@ class GroupTest extends TestCase
 
         $response = $this->get(route('groups.show', $this->group));
 
+        if ($response->status() !== 200) {
+            dump($response->getContent());
+        }
+
         $response->assertStatus(200);
         $shifts = $response->viewData('shifts');
         $this->assertCount(0, $shifts);

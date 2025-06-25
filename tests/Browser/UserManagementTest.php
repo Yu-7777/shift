@@ -114,7 +114,7 @@ class UserManagementTest extends DuskTestCase
                 str_contains($pageSource, '403') || 
                 str_contains($pageSource, '404') ||
                 str_contains($pageSource, 'login') ||
-                str_contains($pageSource, 'Laravel'),
+                str_contains($pageSource, 'シフト管理システム'),
                 'User detail page should be accessible, return error, or redirect'
             );
         });
@@ -131,7 +131,7 @@ class UserManagementTest extends DuskTestCase
                 str_contains($pageSource, '403') || 
                 str_contains($pageSource, '404') ||
                 str_contains($pageSource, 'login') ||
-                str_contains($pageSource, 'Laravel'),
+                str_contains($pageSource, 'シフト管理システム'),
                 'User groups page should be accessible, return error, or redirect'
             );
         });
@@ -210,7 +210,7 @@ class UserManagementTest extends DuskTestCase
             $this->assertTrue(
                 str_contains($pageSource, 'パスワード') || 
                 str_contains($pageSource, '404') ||
-                str_contains($pageSource, 'Laravel') ||
+                str_contains($pageSource, 'シフト管理システム') ||
                 str_contains($pageSource, 'forgot'),
                 'Password reset page should exist, return 404, or redirect'
             );
@@ -222,7 +222,7 @@ class UserManagementTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             // 基本的なUI要素のテスト
             $browser->visit('/')
-                ->assertSee('Laravel');
+                ->assertSee('シフト管理システム');
                 
             $browser->visit('/login')
                 ->assertPresent('input[name="email"]')
@@ -234,7 +234,7 @@ class UserManagementTest extends DuskTestCase
     {
         $this->browse(function (Browser $browser) {
             $browser->visit('/')
-                ->assertSee('Laravel');
+                ->assertSee('シフト管理システム');
                 
             // ダークモードトグルがあるか確認
             if ($browser->element('[data-testid="dark-mode-toggle"]')) {

@@ -20,6 +20,9 @@
                         ホーム
                     </x-nav-link>
                     @endif
+                    <x-nav-link :href="route('chats.index')" :active="request()->routeIs('chats.*')">
+                        チャット
+                    </x-nav-link>
                 </div>
             </div>
 
@@ -82,6 +85,9 @@
                 ホーム
             </x-responsive-nav-link>
             @endif
+            <x-responsive-nav-link :href="route('chats.index')" :active="request()->routeIs('chats.*')">
+                チャット
+            </x-responsive-nav-link>
         </div>
 
         <!-- Responsive Settings Options -->

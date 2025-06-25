@@ -13,6 +13,12 @@ class GroupMemberModelTest extends TestCase
 {
     use RefreshDatabase;
 
+    protected function setUp(): void
+    {
+        parent::setUp();
+        $this->seed(\Database\Seeders\RoleSeeder::class);
+    }
+
     public function test_group_member_has_fillable_attributes()
     {
         $fillable = ['user_id', 'group_id', 'role_id'];
@@ -31,12 +37,11 @@ class GroupMemberModelTest extends TestCase
     {
         $user = User::factory()->create();
         $group = Group::factory()->create();
-        $role = Role::create(['name' => '管理者']);
         
         $groupMember = GroupMember::create([
             'user_id' => $user->id,
             'group_id' => $group->id,
-            'role_id' => $role->id,
+            'role_id' => GroupMember::ROLE_ADMIN,
         ]);
 
         $this->assertInstanceOf(User::class, $groupMember->user);
@@ -47,12 +52,11 @@ class GroupMemberModelTest extends TestCase
     {
         $user = User::factory()->create();
         $group = Group::factory()->create();
-        $role = Role::create(['name' => '管理者']);
         
         $groupMember = GroupMember::create([
             'user_id' => $user->id,
             'group_id' => $group->id,
-            'role_id' => $role->id,
+            'role_id' => GroupMember::ROLE_ADMIN,
         ]);
 
         $this->assertInstanceOf(Group::class, $groupMember->group);
@@ -63,34 +67,32 @@ class GroupMemberModelTest extends TestCase
     {
         $user = User::factory()->create();
         $group = Group::factory()->create();
-        $role = Role::create(['name' => '管理者']);
         
         $groupMember = GroupMember::create([
             'user_id' => $user->id,
             'group_id' => $group->id,
-            'role_id' => $role->id,
+            'role_id' => GroupMember::ROLE_ADMIN,
         ]);
 
         $this->assertInstanceOf(Role::class, $groupMember->role);
-        $this->assertEquals($role->id, $groupMember->role->id);
+        $this->assertEquals(GroupMember::ROLE_ADMIN, $groupMember->role->id);
     }
 
     public function test_group_member_can_be_created_with_all_attributes()
     {
         $user = User::factory()->create();
         $group = Group::factory()->create();
-        $role = Role::create(['name' => '管理者']);
         
         $groupMember = GroupMember::create([
             'user_id' => $user->id,
             'group_id' => $group->id,
-            'role_id' => $role->id,
+            'role_id' => GroupMember::ROLE_ADMIN,
         ]);
 
         $this->assertDatabaseHas('group_members', [
             'user_id' => $user->id,
             'group_id' => $group->id,
-            'role_id' => $role->id,
+            'role_id' => GroupMember::ROLE_ADMIN,
         ]);
     }
 
@@ -98,13 +100,12 @@ class GroupMemberModelTest extends TestCase
     {
         $user = User::factory()->create();
         $group = Group::factory()->create();
-        $role = Role::create(['name' => '管理者']);
         
         // 最初のGroupMemberを作成
         GroupMember::create([
             'user_id' => $user->id,
             'group_id' => $group->id,
-            'role_id' => $role->id,
+            'role_id' => GroupMember::ROLE_ADMIN,
         ]);
 
         // 同じuser_id, group_idの組み合わせで作成を試行
@@ -113,7 +114,7 @@ class GroupMemberModelTest extends TestCase
         GroupMember::create([
             'user_id' => $user->id,
             'group_id' => $group->id,
-            'role_id' => $role->id,
+            'role_id' => GroupMember::ROLE_ADMIN,
         ]);
     }
 

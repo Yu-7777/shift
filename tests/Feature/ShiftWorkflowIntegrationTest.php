@@ -25,8 +25,8 @@ class ShiftWorkflowIntegrationTest extends TestCase
     {
         parent::setUp();
 
-        $adminRole = Role::create(['name' => '管理者']);
-        $memberRole = Role::create(['name' => 'メンバー']);
+        // シーダーを実行してRoleを作成
+        $this->seed(\Database\Seeders\RoleSeeder::class);
 
         $this->admin = User::factory()->create(['email' => 'admin@test.com']);
         $this->member1 = User::factory()->create(['email' => 'member1@test.com']);
@@ -36,19 +36,19 @@ class ShiftWorkflowIntegrationTest extends TestCase
         GroupMember::create([
             'user_id' => $this->admin->id,
             'group_id' => $this->group->id,
-            'role_id' => $adminRole->id
+            'role_id' => GroupMember::ROLE_ADMIN
         ]);
 
         GroupMember::create([
             'user_id' => $this->member1->id,
             'group_id' => $this->group->id,
-            'role_id' => $memberRole->id
+            'role_id' => GroupMember::ROLE_MEMBER
         ]);
 
         GroupMember::create([
             'user_id' => $this->member2->id,
             'group_id' => $this->group->id,
-            'role_id' => $memberRole->id
+            'role_id' => GroupMember::ROLE_MEMBER
         ]);
     }
 

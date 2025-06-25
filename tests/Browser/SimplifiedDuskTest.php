@@ -19,7 +19,7 @@ class SimplifiedDuskTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             // ウェルカムページ
             $browser->visit('/')
-                ->assertSee('Laravel');
+                ->assertSee('シフト管理システム');
 
             // ログインページ
             $browser->visit('/login')
@@ -89,7 +89,7 @@ class SimplifiedDuskTest extends DuskTestCase
             // デスクトップサイズ
             $browser->resize(1200, 800)
                 ->visit('/')
-                ->assertSee('Laravel');
+                ->assertSee('シフト管理システム');
 
             // モバイルサイズ
             $browser->resize(375, 667)

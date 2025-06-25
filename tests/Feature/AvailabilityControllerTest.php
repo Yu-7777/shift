@@ -17,20 +17,19 @@ class AvailabilityControllerTest extends TestCase
 
     protected $user;
     protected $group;
-    protected $memberRole;
 
     protected function setUp(): void
     {
         parent::setUp();
+        $this->seed(\Database\Seeders\RoleSeeder::class);
 
-        $this->memberRole = Role::create(['name' => 'メンバー']);
         $this->user = User::factory()->create();
         $this->group = Group::factory()->create();
 
         GroupMember::create([
             'user_id' => $this->user->id,
             'group_id' => $this->group->id,
-            'role_id' => $this->memberRole->id,
+            'role_id' => GroupMember::ROLE_MEMBER,
         ]);
     }
 
@@ -260,7 +259,7 @@ class AvailabilityControllerTest extends TestCase
         GroupMember::create([
             'user_id' => $otherUser->id,
             'group_id' => $this->group->id,
-            'role_id' => $this->memberRole->id,
+            'role_id' => GroupMember::ROLE_MEMBER,
         ]);
 
         $otherAvailability = ShiftSubmission::create([
