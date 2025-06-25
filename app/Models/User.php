@@ -12,7 +12,7 @@ class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
 
-    public function group_members()
+    public function groupMembers()
     {
         return $this->hasMany(GroupMember::class);
     }
@@ -22,12 +22,12 @@ class User extends Authenticatable
         return $this->hasMany(Shift::class);
     }
 
-    public function shift_requests()
+    public function shiftRequests()
     {
         return $this->hasMany(ShiftRequest::class);
     }
 
-    public function shift_submissions()
+    public function shiftSubmissions()
     {
         return $this->hasMany(ShiftSubmission::class);
     }
@@ -42,14 +42,23 @@ class User extends Authenticatable
         return $this->belongsToMany(Chat::class);
     }
 
+    public function groups()
+    {
+        return $this->belongsToMany(Group::class, 'group_members')
+            ->withPivot('role_id')
+            ->withTimestamps();
+    }
+
     // 所属しているバイトグループを取得
     public function getShiftGroups(int $limit_count = 10)
     {
         return $this->belongsToMany(Group::class, 'group_members')
-                    ->withCount('group_members') // プロパティにメンバーの人数を追加
-                    ->orderBy('group_members.created_at', 'desc')
-                    ->limit($limit_count)
-                    ->get();
+            ->withPivot('role_id')
+            ->withTimestamps()
+            ->withCount('group_members') // プロパティにメンバーの人数を追加
+            ->orderBy('group_members.created_at', 'desc')
+            ->limit($limit_count)
+            ->get();
     }
 
     /**
