@@ -64,7 +64,7 @@ class ChatController extends Controller
             ]);
 
             // グループの全メンバーをチャットに追加
-            $groupMembers = $group->users()->pluck('users.id');
+            $groupMembers = $group->users()->pluck('id');
             $chat->users()->attach($groupMembers);
 
             DB::commit();
