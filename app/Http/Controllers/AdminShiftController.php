@@ -171,8 +171,7 @@ class AdminShiftController extends Controller
             abort(401, 'ログインが必要です');
         }
 
-        $groupMember = GroupMember::with('role')
-            ->where('group_id', $group->id)
+        $groupMember = GroupMember::where('group_id', $group->id)
             ->where('user_id', auth()->id())
             ->first();
 
@@ -180,8 +179,8 @@ class AdminShiftController extends Controller
             abort(403, 'このグループのメンバーではありません');
         }
 
-        // Role名で判定（より確実）
-        $isAdmin = $groupMember->role && $groupMember->role->name === '管理者';
+        // role_idで判定（定数ベースでより確実）
+        $isAdmin = $groupMember->role_id === GroupMember::ROLE_ADMIN;
 
         if (!$isAdmin) {
             abort(403, '管理者権限が必要です');
