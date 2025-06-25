@@ -22,7 +22,7 @@ class HomeTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             // 基本的なページアクセステストに簡略化
             $browser->visit('/')
-                ->assertSee('Laravel');
+                ->assertSee('シフト管理システム');
         });
 
         $this->assertTrue(true, 'Home page test simplified for environment stability');

@@ -1,42 +1,65 @@
-<x-login-layout>
+<x-login-layout 
+    :description="'アカウントにログインしてください'"
+    :title="'ログイン'"
+    :footer-text="'アカウントをお持ちでない方は'"
+    :footer-link="route('register')"
+    :footer-link-text="'こちらから登録'">
     <!-- Session Status -->
     <x-auth-session-status class="mb-4" :status="session('status')" />
 
-    <form method="POST" action="{{ route('login') }}" class="px-4 sm:px-6">
+    <form method="POST" action="{{ route('login') }}" class="space-y-6">
         @csrf
 
         <!-- Email Address -->
-        <div class="mb-8">
-            <x-underlined-input label="{{ __('Email Address') }}" name="email" type="email" :value="old('email')" required autofocus />
+        <div>
+            <label for="email" class="block text-sm font-medium text-gray-700">メールアドレス</label>
+            <input type="email" 
+                   name="email" 
+                   id="email"
+                   value="{{ old('email') }}"
+                   class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                   required 
+                   autofocus>
+            @error('email')
+                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+            @enderror
         </div>
 
         <!-- Password -->
-        <div class="mb-8">
-            <x-underlined-input label="{{ __('Password') }}" name="password" type="password" required />
+        <div>
+            <label for="password" class="block text-sm font-medium text-gray-700">パスワード</label>
+            <input type="password" 
+                   name="password" 
+                   id="password"
+                   class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                   required>
+            @error('password')
+                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+            @enderror
         </div>
 
         <!-- Remember Me -->
-        <div class="block mt-4">
+        <div class="flex items-center justify-between">
             <label for="remember_me" class="inline-flex items-center">
-                <input id="remember_me" type="checkbox" class="rounded border-gray-300 text-indigo-600 shadow-sm focus:ring-indigo-500" name="remember">
-                <span class="ml-2 text-sm text-gray-600">{{ __('Remember Me') }}</span>
+                <input id="remember_me" 
+                       type="checkbox" 
+                       class="rounded border-gray-300 text-blue-600 shadow-sm focus:ring-blue-500" 
+                       name="remember">
+                <span class="ml-2 text-sm text-gray-600">ログイン状態を保持する</span>
             </label>
-        </div>
-
-        <div class="mt-6 w-full flex flex-col items-center">
-            <div class="w-full max-w-md flex justify-center">
-                <x-primary-button class="w-48 flex justify-center bg-emerald-600">
-                    {{ __('Login') }}
-                </x-primary-button>
-            </div>
 
             @if (Route::has('password.request'))
-            <div class="mt-4 text-center">
-                <a class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" href="{{ route('password.request') }}">
-                    {{ __('Forgot Your Password?') }}
+                <a class="text-sm text-blue-600 hover:text-blue-500" href="{{ route('password.request') }}">
+                    パスワードを忘れた方はこちら
                 </a>
-            </div>
             @endif
+        </div>
+
+        <!-- Submit Button -->
+        <div>
+            <button type="submit" class="w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded transition-colors">
+                ログイン
+            </button>
         </div>
     </form>
 </x-login-layout>
