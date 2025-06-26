@@ -171,6 +171,7 @@ class AdminShiftController extends Controller
             abort(401, 'ログインが必要です');
         }
 
+        // role_idを直接参照するためEager loadingは不要
         $groupMember = GroupMember::where('group_id', $group->id)
             ->where('user_id', auth()->id())
             ->first();
