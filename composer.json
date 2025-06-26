@@ -58,6 +58,7 @@
             "mkdir -p storage/logs",
             "chmod -R 755 bootstrap/cache",
             "chmod -R 755 storage",
+            "chmod -R 777 storage",
             "@php artisan optimize"
         ]
     },
