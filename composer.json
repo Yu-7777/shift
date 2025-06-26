@@ -52,6 +52,10 @@
         ],
         "post-install-cmd": [
             "php artisan clear-compiled",
+            "mkdir -p storage/framework/sessions",
+            "mkdir -p storage/framework/views",
+            "mkdir -p storage/framework/cache",
+            "mkdir -p storage/logs",
             "chmod -R 755 bootstrap/cache",
             "chmod -R 755 storage",
             "@php artisan optimize"

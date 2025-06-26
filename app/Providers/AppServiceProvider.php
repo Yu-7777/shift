@@ -19,7 +19,16 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        \URL::forceScheme('https');
-        $this->app['request']->server->set('HTTPS', 'on');
+        // Heroku用のHTTPS設定
+        if (app()->environment('production')) {
+            \URL::forceScheme('https');
+            $this->app['request']->server->set('HTTPS', 'on');
+        }
+
+        // セッションディレクトリの確実な作成
+        $sessionPath = storage_path('framework/sessions');
+        if (!file_exists($sessionPath)) {
+            mkdir($sessionPath, 0755, true);
+        }
     }
 }
