@@ -8,7 +8,6 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\Log;
 
 /*
 |--------------------------------------------------------------------------
@@ -22,7 +21,6 @@ use Illuminate\Support\Facades\Log;
 */
 
 Route::get('/', function () {
-    Log::error('Debug Test');
     return view('welcome');
 });
 
