@@ -4,7 +4,7 @@
     "scripts": {
         "dev": "vite",
         "build": "vite build",
-        "heroku-postbuild": "npm run build"
+        "heroku-postbuild": "npm install && npm run build"
     },
     "dependencies": {
         "@popperjs/core": "^2.11.6",
